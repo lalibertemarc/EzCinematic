@@ -1,6 +1,6 @@
 # EzCinematic
 
-## Unreleased
+## v1.1.0
 
 - Esc in cinematic mode clears your target instead of bringing the interface back. With no target, Esc turns cinematic mode off and restores everything, instead of showing the interface with names, nameplates and sound still changed.
 
