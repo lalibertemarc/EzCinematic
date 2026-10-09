@@ -32,6 +32,7 @@ Tips:
 - **Screenshots:** turn on cinematic mode, frame your shot, press your screenshot key (Print Screen by default), then turn it off
 - **Role-play walks:** turn it on and just walk. You can still move, jump, use emotes from keybinds and mount up
 - Press **Alt+Z** if you need the interface back for a moment. Your next press of the key still restores everything else
+- **Esc** clears your target without bringing the interface back. With nothing targeted, Esc turns cinematic mode off
 
 ## Good to know
 

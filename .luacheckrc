@@ -17,5 +17,6 @@ read_globals = {
     -- Namespaced APIs
     "C_CVar", "C_AddOns",
     -- Global APIs
-    "InCombatLockdown", "SetUIVisibility",
+    "InCombatLockdown", "SetUIVisibility", "UnitExists", "GetCVarBool",
+    "GetBindingKey", "SetOverrideBindingClick", "ClearOverrideBindings",
 }

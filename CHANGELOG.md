@@ -1,5 +1,9 @@
 # EzCinematic
 
+## Unreleased
+
+- Esc in cinematic mode clears your target instead of bringing the interface back. With no target, Esc turns cinematic mode off and restores everything, instead of showing the interface with names, nameplates and sound still changed.
+
 ## v1.0.0
 
 - First release for WoW Forever.

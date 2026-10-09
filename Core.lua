@@ -38,6 +38,29 @@ local function ApplySoundPreset()
 end
 
 ---------------------------------------------------------------------------
+-- Esc while hidden
+---------------------------------------------------------------------------
+-- The game's Esc shows a hidden UI before it gets to clearing the target, and ClearTarget is
+-- protected, so a plain Lua handler can't step in. While cinematic mode is on, the game-menu
+-- keys click this secure button instead: Esc drops the target first, then exits cinematic mode.
+local escButton = CreateFrame("Button", "EzCinematicEscButton", nil, "SecureActionButtonTemplate")
+escButton:RegisterForClicks(GetCVarBool("ActionButtonUseKeyDown") and "AnyDown" or "AnyUp")
+escButton:SetAttribute("type", "macro")
+escButton:SetAttribute("macrotext", "/cleartarget")
+escButton:SetScript("PreClick", function()
+    if not UnitExists("target") then EzCinematic_Toggle() end
+end)
+
+-- Out of combat only, like everything else Enter/Restore do.
+local function SetEscOverride(on)
+    ClearOverrideBindings(escButton)
+    if not on then return end
+    for _, key in ipairs({ GetBindingKey("TOGGLEGAMEMENU") }) do
+        SetOverrideBindingClick(escButton, true, key, escButton:GetName())
+    end
+end
+
+---------------------------------------------------------------------------
 -- Enter / exit
 ---------------------------------------------------------------------------
 local function Enter()
@@ -52,6 +75,7 @@ local function Enter()
     end
     ApplySoundPreset()
     SetUIShown(false)
+    SetEscOverride(true)
 end
 
 -- Puts back everything Enter changed. Also used after a /reload mid-cinematic.
@@ -61,6 +85,7 @@ local function Restore()
     end
     db.saved = nil
     SetUIShown(true)
+    SetEscOverride(false)
 end
 
 local function Exit()
