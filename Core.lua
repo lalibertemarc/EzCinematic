@@ -29,8 +29,12 @@ local function Snapshot(list)
 end
 
 local function ApplySoundPreset()
-    if not (C_AddOns.IsAddOnLoaded("EzSoundMixer") and SlashCmdList.EZSOUNDMIXER) then return end
-    SlashCmdList.EZSOUNDMIXER(ns.SOUND_PRESET)
+    if C_AddOns.IsAddOnLoaded("EzSoundMixer") and SlashCmdList.EZSOUNDMIXER then
+        return SlashCmdList.EZSOUNDMIXER(ns.SOUND_PRESET)
+    end
+    for name, value in pairs(ns.FALLBACK_SOUND) do
+        SetCVar(name, value)
+    end
 end
 
 ---------------------------------------------------------------------------
