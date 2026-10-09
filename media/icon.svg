@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#140a2e"/>
+      <stop offset="0.45" stop-color="#4a1f5c"/>
+      <stop offset="0.75" stop-color="#c2485a"/>
+      <stop offset="1" stop-color="#ffb24a"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff6d0"/>
+      <stop offset="0.55" stop-color="#ffd36b"/>
+      <stop offset="1" stop-color="#ff8a3d"/>
+    </radialGradient>
+    <radialGradient id="sunglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffcf6b" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#ffcf6b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a3a6e"/>
+      <stop offset="1" stop-color="#4a2350"/>
+    </linearGradient>
+    <linearGradient id="mid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a1a46"/>
+      <stop offset="1" stop-color="#22102e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff0b0"/>
+      <stop offset="0.45" stop-color="#e5b94c"/>
+      <stop offset="1" stop-color="#8f5f17"/>
+    </linearGradient>
+    <clipPath id="frame">
+      <rect x="0" y="0" width="400" height="400"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="400" height="400" fill="url(#sky)"/>
+    <!-- stars -->
+    <g fill="#fff6d0">
+      <circle cx="62" cy="58" r="2.5"/><circle cx="118" cy="96" r="1.8"/><circle cx="170" cy="40" r="2.2"/>
+      <circle cx="252" cy="70" r="1.6"/><circle cx="300" cy="44" r="2.4"/><circle cx="338" cy="110" r="1.8"/>
+      <circle cx="40" cy="140" r="1.6"/><circle cx="214" cy="118" r="1.4"/>
+    </g>
+    <!-- setting sun -->
+    <circle cx="232" cy="268" r="140" fill="url(#sunglow)"/>
+    <circle cx="232" cy="268" r="70" fill="url(#sun)"/>
+    <g stroke="#ffe7a0" stroke-width="4" stroke-linecap="round" opacity="0.45">
+      <path d="M150,252 h-40 M314,252 h40 M160,236 h-26 M304,236 h26"/>
+    </g>
+    <!-- far range -->
+    <path d="M0,300 L48,250 L84,276 L132,214 L176,262 L214,236 L262,282 L306,226 L352,268 L400,240 V400 H0 Z" fill="url(#far)"/>
+    <!-- near range with a lone hero on the peak -->
+    <path d="M0,340 L70,300 L118,322 L180,268 L232,316 L292,290 L346,328 L400,304 V400 H0 Z" fill="url(#mid)"/>
+    <g fill="#140a1e" stroke="#140a1e" stroke-linecap="round" stroke-linejoin="round">
+      <!-- cape -->
+      <path d="M174,232 Q160,250 146,262 Q164,262 176,252 Z" stroke-width="2"/>
+      <!-- body and legs -->
+      <path d="M173,230 H187 L185,252 L188,270 H182 L180,256 L178,270 H172 L175,252 Z" stroke-width="2"/>
+      <circle cx="180" cy="222" r="7" stroke="none"/>
+      <!-- raised sword arm -->
+      <path d="M185,233 L197,212" fill="none" stroke-width="5"/>
+      <path d="M197,212 L207,176" fill="none" stroke-width="4"/>
+      <path d="M191,212 L203,216" fill="none" stroke-width="4"/>
+    </g>
+    <path d="M0,370 L90,346 L170,364 L250,342 L330,362 L400,348 V400 H0 Z" fill="#120818"/>
+  </g>
+
+  <!-- viewfinder: gold corner brackets -->
+  <g fill="none" stroke="#3a2306" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40,104 V40 H104 M296,40 H360 V104 M360,296 V360 H296 M104,360 H40 V296"/>
+  </g>
+  <g fill="none" stroke="url(#gold)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40,104 V40 H104 M296,40 H360 V104 M360,296 V360 H296 M104,360 H40 V296"/>
+  </g>
+  <!-- REC dot -->
+  <circle cx="318" cy="76" r="11" fill="#ff3b3b" stroke="#3a0606" stroke-width="3"/>
+  <!-- sparkles -->
+  <g fill="#fff6d0">
+    <path d="M90,190 l4,12 l12,4 l-12,4 l-4,12 l-4,-12 l-12,-4 l12,-4 z"/>
+    <path d="M330,170 l3,9 l9,3 l-9,3 l-3,9 l-3,-9 l-9,-3 l9,-3 z"/>
+  </g>
+</svg>
