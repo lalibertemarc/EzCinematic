@@ -1,7 +1,7 @@
 -- EzCinematic: one key for clean screenshots.
 local addonName, ns = ...
 
-local GetCVar, SetCVar = C_CVar.GetCVar, C_CVar.SetCVar
+local GetCVar, SetCVar, GetCVarBool = C_CVar.GetCVar, C_CVar.SetCVar, C_CVar.GetCVarBool
 
 local db           -- EzCinematicDB, set on ADDON_LOADED
 local pendingExit  -- exit was asked for in combat; runs on PLAYER_REGEN_ENABLED
