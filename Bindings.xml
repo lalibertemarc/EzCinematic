@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="EZCINEMATIC_TOGGLE" category="EzCinematic">
+		EzCinematic_Toggle()
+	</Binding>
+</Bindings>
