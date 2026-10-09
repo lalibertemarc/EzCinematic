@@ -1,6 +1,6 @@
 # EzCinematic
 
-One key for clean screenshots in WoW Forever.
+One key for clean screenshots in WoW Forever, or for a role-play walk with nothing between you and the world: no bars, no floating names, just the music and the scenery.
 
 `/cine` or the **Toggle cinematic mode** key binding (Key Bindings → EzCinematic):
 
