@@ -6,6 +6,7 @@
 ## IconTexture: Interface\Icons\INV_Misc_Spyglass_03
 ## SavedVariables: EzCinematicDB
 ## OptionalDeps: EzSoundMixer
+## X-Curse-Project-ID: 1734454
 
 Data.lua
 Core.lua
