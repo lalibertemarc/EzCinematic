@@ -137,7 +137,7 @@ events:SetScript("OnEvent", function(_, event, arg1)
         EzCinematicDB = EzCinematicDB or {}
         db = EzCinematicDB
     elseif event == "PLAYER_LOGIN" then
-        -- A /reload or disconnect during cinematic mode leaves names and sound changed; undo it.
+        -- A /reload or disconnect during cinematic mode leaves names, graphics and sound changed; undo it.
         if db.saved then
             Print("Restoring names, nameplates, graphics and sound from the last cinematic session.")
             Exit()
