@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.3.0
+
+- More graphics in cinematic mode: detailed terrain reaches farther, full water reflections and full weather. As before, only settings below these values are raised, and yours come back when you turn it off.
+
 ## v1.2.0
 
 - Cinematic mode now pushes the graphics past the menu's limits: denser ground clutter drawn much farther out (raid graphics too), 16x texture filtering, best screenshot quality and a farther camera zoom. Only settings below these values are raised, and your own values come back when you turn it off.

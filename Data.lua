@@ -30,6 +30,9 @@ ns.GRAPHICS_CVARS = {
     groundEffectDensity = "256",     RAIDgroundEffectDensity = "256",
     groundEffectDist = "500",        RAIDgroundEffectDist = "500",
     groundEffectFade = "370",        RAIDgroundEffectFade = "370",
+    terrainLodDist = "1000",         RAIDterrainLodDist = "1000", -- detailed terrain farther out
+    reflectionMode = "3",            RAIDreflectionMode = "3",    -- water reflects everything
+    weatherDensity = "3",            RAIDweatherDensity = "3",    -- full rain and snow
     textureFilteringMode = "5",      -- 16x anisotropic: sharp ground textures at a distance
     screenshotQuality = "10",        -- least compression on saved screenshots
     cameraDistanceMaxZoomFactor = "2.6", -- zoom the camera out farther for wide shots

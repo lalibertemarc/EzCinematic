@@ -11,7 +11,7 @@ When you turn cinematic mode on, EzCinematic:
 - **Hides the whole UI**, the same way Alt+Z does
 - **Hides nameplates**, both enemy and friendly
 - **Hides floating names** of NPCs, hostile mobs and other players. **Your own name stays** as you have it set
-- **Pushes the scenery past the graphics menu's limits**: thicker grass and ground clutter drawn much farther out, sharpest texture filtering, top screenshot quality, and a farther camera zoom. Settings you already have higher are left alone
+- **Pushes the scenery past the graphics menu's limits**: thicker grass and ground clutter drawn much farther out, detailed terrain farther away, full water reflections and weather, sharpest texture filtering, top screenshot quality, and a farther camera zoom. Settings you already have higher are left alone
 - **Brings the music forward** with the *Music focus* sound mix (music at full, effects and ambience softer)
 
 When you turn it off, it puts back **your exact settings**: nameplates, names, graphics and every volume slider, not just defaults.
