@@ -22,6 +22,19 @@ ns.SOUND_CVARS = {
     "Sound_DialogVolume", "Sound_EnableDialog",
 }
 
+-- Raised while cinematic mode is on, past what the graphics menu offers. Only raised: a
+-- setting already at or above the value is left alone. The RAID copies are what the game
+-- uses in raids and battlegrounds when the separate raid graphics settings are on.
+ns.GRAPHICS_CVARS = {
+    -- Ground clutter (grass, flowers, pebbles): thicker, drawn farther out, fading later.
+    groundEffectDensity = "256",     RAIDgroundEffectDensity = "256",
+    groundEffectDist = "500",        RAIDgroundEffectDist = "500",
+    groundEffectFade = "370",        RAIDgroundEffectFade = "370",
+    textureFilteringMode = "5",      -- 16x anisotropic: sharp ground textures at a distance
+    screenshotQuality = "10",        -- least compression on saved screenshots
+    cameraDistanceMaxZoomFactor = "2.6", -- zoom the camera out farther for wide shots
+}
+
 -- EzSoundMixer preset applied on entry.
 ns.SOUND_PRESET = "Music focus"
 

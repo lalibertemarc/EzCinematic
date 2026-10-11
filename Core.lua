@@ -28,6 +28,17 @@ local function Snapshot(list)
     end
 end
 
+-- Raises each graphics CVar to its cinematic value, remembering only the ones it changes.
+local function BoostGraphics()
+    for name, value in pairs(ns.GRAPHICS_CVARS) do
+        local current = GetCVar(name)
+        if current ~= nil and (tonumber(current) or 0) < tonumber(value) then
+            db.saved[name] = current
+            SetCVar(name, value)
+        end
+    end
+end
+
 local function ApplySoundPreset()
     if C_AddOns.IsAddOnLoaded("EzSoundMixer") and SlashCmdList.EZSOUNDMIXER then
         return SlashCmdList.EZSOUNDMIXER(ns.SOUND_PRESET)
@@ -73,6 +84,7 @@ local function Enter()
     for _, name in ipairs(ns.HIDE_CVARS) do
         if db.saved[name] then SetCVar(name, "0") end
     end
+    BoostGraphics()
     ApplySoundPreset()
     SetUIShown(false)
     SetEscOverride(true)
@@ -127,7 +139,7 @@ events:SetScript("OnEvent", function(_, event, arg1)
     elseif event == "PLAYER_LOGIN" then
         -- A /reload or disconnect during cinematic mode leaves names and sound changed; undo it.
         if db.saved then
-            Print("Restoring names, nameplates and sound from the last cinematic session.")
+            Print("Restoring names, nameplates, graphics and sound from the last cinematic session.")
             Exit()
         end
     elseif event == "PLAYER_REGEN_ENABLED" then

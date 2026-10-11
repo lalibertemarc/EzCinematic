@@ -11,9 +11,10 @@ When you turn cinematic mode on, EzCinematic:
 - **Hides the whole UI**, the same way Alt+Z does
 - **Hides nameplates**, both enemy and friendly
 - **Hides floating names** of NPCs, hostile mobs and other players. **Your own name stays** as you have it set
+- **Pushes the scenery past the graphics menu's limits**: thicker grass and ground clutter drawn much farther out, sharpest texture filtering, top screenshot quality, and a farther camera zoom. Settings you already have higher are left alone
 - **Brings the music forward** with the *Music focus* sound mix (music at full, effects and ambience softer)
 
-When you turn it off, it puts back **your exact settings**: nameplates, names and every volume slider, not just defaults.
+When you turn it off, it puts back **your exact settings**: nameplates, names, graphics and every volume slider, not just defaults.
 
 ## How to use it
 
@@ -36,8 +37,9 @@ Tips:
 
 ## Good to know
 
+- **Performance:** the extra ground clutter is heavier than the game's own maximum. On a slower PC, expect a lower frame rate while cinematic mode is on
 - **Combat:** cinematic mode can't be started in combat. If you turn it off during combat, everything comes back as soon as combat ends
-- **Reload-safe:** if you /reload or disconnect while it's on, your names, nameplates and volumes are restored the next time you log in
+- **Reload-safe:** if you /reload or disconnect while it's on, your names, nameplates, graphics and volumes are restored the next time you log in
 - **Works great with [EzSoundMixer](https://github.com/lalibertemarc/EzSoundMixer):** if it's installed, EzCinematic uses your own *Music focus* preset, so you can tune the mix. Without it, a built-in Music focus mix is used. EzSoundMixer is optional
 
 Made for **WoW Forever**.
