@@ -25,18 +25,42 @@ ns.SOUND_CVARS = {
 -- Raised while cinematic mode is on, past what the graphics menu offers. Only raised: a
 -- setting already at or above the value is left alone. The RAID copies are what the game
 -- uses in raids and battlegrounds when the separate raid graphics settings are on.
--- Kept moderate: 256 clutter at 500 yd, terrain LOD 1000 and reflectionMode 3 together ran an
--- 8 GB card out of video memory in a city (D3D12 framebuffer/texture creation asserts).
 ns.GRAPHICS_CVARS = {
-    -- Ground clutter (grass, flowers, pebbles): thicker, drawn farther out, fading later.
-    groundEffectDensity = "128",     RAIDgroundEffectDensity = "128",
-    groundEffectDist = "350",        RAIDgroundEffectDist = "350",
-    groundEffectFade = "280",        RAIDgroundEffectFade = "280",
-    terrainLodDist = "800",          RAIDterrainLodDist = "800",  -- detailed terrain farther out
     weatherDensity = "3",            RAIDweatherDensity = "3",    -- full rain and snow
     textureFilteringMode = "5",      -- 16x anisotropic: sharp ground textures at a distance
     screenshotQuality = "10",        -- least compression on saved screenshots
     cameraDistanceMaxZoomFactor = "2.6", -- zoom the camera out farther for wide shots
+}
+
+-- Raised the same way, to the values set on the options page. Option key -> CVars it sets.
+ns.GRAPHICS_OPTIONS = {
+    -- Ground clutter (grass, flowers, pebbles): thicker and drawn farther out.
+    clutterDensity = { "groundEffectDensity", "RAIDgroundEffectDensity" },
+    clutterDistance = { "groundEffectDist", "RAIDgroundEffectDist" },
+    terrainDistance = { "terrainLodDist", "RAIDterrainLodDist" }, -- detailed terrain farther out
+}
+-- Clutter starts fading at this fraction of its draw distance.
+ns.CLUTTER_FADE_CVARS = { "groundEffectFade", "RAIDgroundEffectFade" }
+ns.CLUTTER_FADE = 0.8
+-- With the reflections option: water reflects everything.
+ns.REFLECTION_CVARS = { "reflectionMode", "RAIDreflectionMode" }
+ns.REFLECTION_FULL = 3
+
+-- Options page defaults. Safe on an 8 GB card: 256 clutter at 500 yd, terrain 1000 and full
+-- reflections together ran one out of video memory in a city (D3D12 framebuffer/texture asserts).
+ns.DEFAULTS = {
+    boost = true,
+    clutterDensity = 128,
+    clutterDistance = 350,
+    terrainDistance = 800,
+    reflections = false,
+}
+
+-- Slider ranges (min, max, step). Maxima are values the client is known to accept.
+ns.SLIDERS = {
+    clutterDensity = { 16, 256, 16 },
+    clutterDistance = { 100, 500, 25 },
+    terrainDistance = { 200, 1000, 50 },
 }
 
 -- EzSoundMixer preset applied on entry.

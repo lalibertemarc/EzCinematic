@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.4.0
+
+- New options page (Esc → Options → AddOns → EzCinematic, or `/cine config`) to tune the graphics boost for your graphics card: ground clutter density and distance, terrain detail distance, and full water reflections. You can also turn the boost off. The defaults stay the safe v1.3.1 values.
+
 ## v1.3.1
 
 - Fixed a game crash in busy areas like cities: cinematic mode's graphics boost could run the graphics card out of video memory. Ground clutter and terrain detail are toned down, and water reflections are no longer forced to full.

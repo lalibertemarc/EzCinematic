@@ -16,7 +16,9 @@ read_globals = {
     "CreateFrame", "UIParent", "DEFAULT_CHAT_FRAME",
     -- Namespaced APIs
     "C_CVar", "C_AddOns",
+    -- Settings panel
+    "Settings", "CreateSettingsListSectionHeaderInitializer", "MinimalSliderWithSteppersMixin",
     -- Global APIs
-    "InCombatLockdown", "SetUIVisibility", "UnitExists",
+    "strtrim", "InCombatLockdown", "SetUIVisibility", "UnitExists",
     "GetBindingKey", "SetOverrideBindingClick", "ClearOverrideBindings",
 }

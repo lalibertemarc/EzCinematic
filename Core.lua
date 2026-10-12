@@ -28,13 +28,30 @@ local function Snapshot(list)
     end
 end
 
+-- Cinematic graphics values from Data.lua and the options page: CVar name -> number.
+local function GraphicsTargets()
+    local targets = {}
+    for name, value in pairs(ns.GRAPHICS_CVARS) do targets[name] = tonumber(value) end
+    for key, names in pairs(ns.GRAPHICS_OPTIONS) do
+        for _, name in ipairs(names) do targets[name] = db[key] end
+    end
+    for _, name in ipairs(ns.CLUTTER_FADE_CVARS) do
+        targets[name] = math.floor(db.clutterDistance * ns.CLUTTER_FADE)
+    end
+    if db.reflections then
+        for _, name in ipairs(ns.REFLECTION_CVARS) do targets[name] = ns.REFLECTION_FULL end
+    end
+    return targets
+end
+
 -- Raises each graphics CVar to its cinematic value, remembering only the ones it changes.
 local function BoostGraphics()
-    for name, value in pairs(ns.GRAPHICS_CVARS) do
+    if not db.boost then return end
+    for name, value in pairs(GraphicsTargets()) do
         local current = GetCVar(name)
-        if current ~= nil and (tonumber(current) or 0) < tonumber(value) then
+        if current ~= nil and (tonumber(current) or 0) < value then
             db.saved[name] = current
-            SetCVar(name, value)
+            SetCVar(name, tostring(value))
         end
     end
 end
@@ -125,7 +142,16 @@ BINDING_HEADER_EZCINEMATIC = "EzCinematic"
 
 SLASH_EZCINEMATIC1 = "/cine"
 SLASH_EZCINEMATIC2 = "/ezcinematic"
-SlashCmdList.EZCINEMATIC = EzCinematic_Toggle
+SlashCmdList.EZCINEMATIC = function(msg)
+    local cmd = strtrim(msg or ""):lower()
+    if cmd == "config" or cmd == "options" then
+        if ns.settingsCategory then Settings.OpenToCategory(ns.settingsCategory:GetID()) end
+    elseif cmd == "" then
+        EzCinematic_Toggle()
+    else
+        Print("/cine - toggle cinematic mode, /cine config - options")
+    end
+end
 
 ---------------------------------------------------------------------------
 -- Events
@@ -136,6 +162,10 @@ events:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == addonName then
         EzCinematicDB = EzCinematicDB or {}
         db = EzCinematicDB
+        for key, value in pairs(ns.DEFAULTS) do
+            if db[key] == nil then db[key] = value end
+        end
+        ns.BuildSettings(db)
     elseif event == "PLAYER_LOGIN" then
         -- A /reload or disconnect during cinematic mode leaves names, graphics and sound changed; undo it.
         if db.saved then

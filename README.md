@@ -35,9 +35,19 @@ Tips:
 - Press **Alt+Z** if you need the interface back for a moment. Your next press of the key still restores everything else
 - **Esc** clears your target without bringing the interface back. With nothing targeted, Esc turns cinematic mode off
 
+## Options
+
+**Esc → Options → AddOns → EzCinematic** (or **`/cine config`**) sets how far the graphics boost goes:
+
+- **Boost graphics:** turn the whole boost off if you only want the clean screen
+- **Ground clutter density** and **distance**, and **terrain detail distance**
+- **Full water reflections:** water reflects buildings, players and creatures (off by default)
+
+The defaults are safe on an 8 GB graphics card. With a stronger card, raise them for even richer scenery; if the game ever crashes in a busy area like a city, lower them again. Changes apply the next time you turn cinematic mode on.
+
 ## Good to know
 
-- **Performance:** the extra ground clutter and terrain detail cost frame rate and video memory. On a slower PC, expect a lower frame rate while cinematic mode is on
+- **Performance:** the extra ground clutter and terrain detail cost frame rate and video memory. On a slower PC, expect a lower frame rate while cinematic mode is on, or lower the boost in the options
 - **Combat:** cinematic mode can't be started in combat. If you turn it off during combat, everything comes back as soon as combat ends
 - **Reload-safe:** if you /reload or disconnect while it's on, your names, nameplates, graphics and volumes are restored the next time you log in
 - **Works great with [EzSoundMixer](https://github.com/lalibertemarc/EzSoundMixer):** if it's installed, EzCinematic uses your own *Music focus* preset, so you can tune the mix. Without it, a built-in Music focus mix is used. EzSoundMixer is optional
