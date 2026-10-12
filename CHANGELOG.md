@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.3.1
+
+- Fixed a game crash in busy areas like cities: cinematic mode's graphics boost could run the graphics card out of video memory. Ground clutter and terrain detail are toned down, and water reflections are no longer forced to full.
+
 ## v1.3.0
 
 - More graphics in cinematic mode: detailed terrain reaches farther, full water reflections and full weather. As before, only settings below these values are raised, and yours come back when you turn it off.
