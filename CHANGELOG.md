@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.4.1
+
+- Cinematic mode now turns itself off when you enter combat, bringing back the interface, nameplates, names, graphics and sound right away. Before, getting pulled by a mob left you stuck with no UI until the fight ended.
+
 ## v1.4.0
 
 - New options page (Esc → Options → AddOns → EzCinematic, or `/cine config`) to tune the graphics boost for your graphics card: ground clutter density and distance, terrain detail distance, and full water reflections. You can also turn the boost off. The defaults stay the safe v1.3.1 values.

@@ -34,6 +34,7 @@ Tips:
 - **Role-play walks:** turn it on and just walk. You can still move, jump, use emotes from keybinds and mount up
 - Press **Alt+Z** if you need the interface back for a moment. Your next press of the key still restores everything else
 - **Esc** clears your target without bringing the interface back. With nothing targeted, Esc turns cinematic mode off
+- **Combat** turns cinematic mode off on its own, so a mob that jumps you on a walk never leaves you fighting without your UI
 
 ## Options
 

@@ -158,6 +158,7 @@ end
 ---------------------------------------------------------------------------
 events:RegisterEvent("ADDON_LOADED")
 events:RegisterEvent("PLAYER_LOGIN")
+events:RegisterEvent("PLAYER_REGEN_DISABLED")
 events:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == addonName then
         EzCinematicDB = EzCinematicDB or {}
@@ -170,6 +171,13 @@ events:SetScript("OnEvent", function(_, event, arg1)
         -- A /reload or disconnect during cinematic mode leaves names, graphics and sound changed; undo it.
         if db.saved then
             Print("Restoring names, nameplates, graphics and sound from the last cinematic session.")
+            Exit()
+        end
+    elseif event == "PLAYER_REGEN_DISABLED" then
+        -- Fires just before combat lockdown, so the UI, nameplates and Esc can still all come back
+        -- now; waiting for the fight to end would leave you fighting blind.
+        if db and db.saved and not pendingExit then
+            Print("Combat started, leaving cinematic mode.")
             Exit()
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
