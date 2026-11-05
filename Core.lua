@@ -89,6 +89,50 @@ local function SetEscOverride(on)
 end
 
 ---------------------------------------------------------------------------
+-- Toggle button
+---------------------------------------------------------------------------
+-- The game always shows your target's name, whatever the name CVars say, so entering cinematic
+-- mode drops the target. ClearTarget is protected: the key binding and `/click EzCinematicButton`
+-- go through this secure button, whose "target" action with unit "none" clears it (a plain
+-- action, so it also works from a user macro, where macrotext wouldn't). While cinematic mode is
+-- on the action is off, so leaving keeps whatever you targeted meanwhile. Fires on release like a
+-- mouse click; PostClick ignores the press.
+local toggleButton = CreateFrame("Button", "EzCinematicButton", nil, "SecureActionButtonTemplate")
+toggleButton:RegisterForClicks("AnyUp", "AnyDown")
+toggleButton:SetAttribute("useOnKeyDown", false)
+toggleButton:SetAttribute("unit", "none")
+toggleButton:SetScript("PostClick", function(_, _, down)
+    if not down then EzCinematic_Toggle() end
+end)
+
+-- Out of combat only.
+local function SetClearOnPress(on)
+    toggleButton:SetAttribute("type", on and "target" or nil)
+end
+SetClearOnPress(true)
+
+-- Keys bound to "Toggle cinematic mode" click the button instead of running the binding's Lua.
+-- Override bindings are protected in combat: deferred until it ends. Only reapplied when the keys
+-- change, since setting them fires UPDATE_BINDINGS again.
+local boundKeys = ""
+local bindingsPending
+local function BindToggleKeys()
+    if InCombatLockdown() then
+        bindingsPending = true
+        return
+    end
+    bindingsPending = nil
+    local keys = { GetBindingKey("EZCINEMATIC_TOGGLE") }
+    local list = table.concat(keys, " ")
+    if list == boundKeys then return end
+    boundKeys = list
+    ClearOverrideBindings(toggleButton)
+    for _, key in ipairs(keys) do
+        SetOverrideBindingClick(toggleButton, false, key, toggleButton:GetName())
+    end
+end
+
+---------------------------------------------------------------------------
 -- Enter / exit
 ---------------------------------------------------------------------------
 local function Enter()
@@ -105,6 +149,11 @@ local function Enter()
     ApplySoundPreset()
     SetUIShown(false)
     SetEscOverride(true)
+    SetClearOnPress(false)
+    if UnitExists("target") then
+        -- Started from /cine, which can't clear it.
+        Print("Your target's name still shows: press Esc to clear it.")
+    end
 end
 
 -- Puts back everything Enter changed. Also used after a /reload mid-cinematic.
@@ -115,12 +164,12 @@ local function Restore()
     db.saved = nil
     SetUIShown(true)
     SetEscOverride(false)
+    SetClearOnPress(true)
 end
 
 local function Exit()
     if InCombatLockdown() then
         pendingExit = true
-        events:RegisterEvent("PLAYER_REGEN_ENABLED")
         return
     end
     Restore()
@@ -159,6 +208,8 @@ end
 events:RegisterEvent("ADDON_LOADED")
 events:RegisterEvent("PLAYER_LOGIN")
 events:RegisterEvent("PLAYER_REGEN_DISABLED")
+events:RegisterEvent("PLAYER_REGEN_ENABLED")
+events:RegisterEvent("UPDATE_BINDINGS")
 events:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == addonName then
         EzCinematicDB = EzCinematicDB or {}
@@ -167,7 +218,10 @@ events:SetScript("OnEvent", function(_, event, arg1)
             if db[key] == nil then db[key] = value end
         end
         ns.BuildSettings(db)
+    elseif event == "UPDATE_BINDINGS" then
+        BindToggleKeys()
     elseif event == "PLAYER_LOGIN" then
+        BindToggleKeys()
         -- A /reload or disconnect during cinematic mode leaves names, graphics and sound changed; undo it.
         if db.saved then
             Print("Restoring names, nameplates, graphics and sound from the last cinematic session.")
@@ -180,9 +234,14 @@ events:SetScript("OnEvent", function(_, event, arg1)
             Print("Combat started, leaving cinematic mode.")
             Exit()
         end
+        -- A press in combat would drop your target and then refuse to start.
+        SetClearOnPress(false)
     elseif event == "PLAYER_REGEN_ENABLED" then
-        events:UnregisterEvent("PLAYER_REGEN_ENABLED")
-        pendingExit = nil
-        Restore()
+        if bindingsPending then BindToggleKeys() end
+        if pendingExit then
+            pendingExit = nil
+            Restore()
+        end
+        SetClearOnPress(not (db and db.saved))
     end
 end)

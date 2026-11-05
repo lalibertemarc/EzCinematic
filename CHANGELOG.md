@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.4.2
+
+- Cinematic mode now clears your target when it starts: the game always shows your target's name, so it used to stay floating over a trainer or anyone else you had selected. This works from the key binding and from a macro with `/click EzCinematicButton` (the new recommended macro). Plain `/cine` can't clear a target, so it tells you to press Esc instead.
+
 ## v1.4.1
 
 - Cinematic mode now turns itself off when you enter combat, bringing back the interface, nameplates, names, graphics and sound right away. Before, getting pulled by a mob left you stuck with no UI until the fight ended.

@@ -11,6 +11,7 @@ When you turn cinematic mode on, EzCinematic:
 - **Hides the whole UI**, the same way Alt+Z does
 - **Hides nameplates**, both enemy and friendly
 - **Hides floating names** of NPCs, hostile mobs and other players. **Your own name stays** as you have it set
+- **Clears your target**, since the game always shows the name of whatever you have targeted
 - **Pushes the scenery past the graphics menu's limits**: thicker grass and ground clutter drawn much farther out, detailed terrain farther away, full weather, sharpest texture filtering, top screenshot quality, and a farther camera zoom. Settings you already have higher are left alone
 - **Brings the music forward** with the *Music focus* sound mix (music at full, effects and ambience softer)
 
@@ -21,10 +22,12 @@ When you turn it off, it puts back **your exact settings**: nameplates, names, g
 The easiest way is a macro on a key you can reach:
 
 1. Type **`/macro`** and click **New**
-2. Name it (for example *Cinematic*), pick any icon, and type **`/cine`** as the macro text
+2. Name it (for example *Cinematic*), pick any icon, and type **`/click EzCinematicButton`** as the macro text
 3. Drag the macro to an action bar slot and **bind a key** to that slot
 
 Bind a key rather than just clicking the button: while cinematic mode is on, the action bars and chat box are hidden, so the key is how you turn it back off.
+
+Typing **`/cine`** works too, but it can't clear your target (the game only lets a key press or click do that): press Esc once in cinematic mode to drop it.
 
 Prefer a direct key binding? Go to **Options → Key Bindings → EzCinematic → Toggle cinematic mode**.
 
