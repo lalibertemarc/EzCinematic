@@ -11,6 +11,16 @@ ns.HIDE_CVARS = {
     "UnitNameInteractiveNPC",
     "UnitNameFriendlyPlayerName",
     "UnitNameEnemyPlayerName",
+    -- Pets, minions, guardians and totems (yours too) and critters.
+    "UnitNameFriendlyPetName",
+    "UnitNameFriendlyGuardianName",
+    "UnitNameFriendlyTotemName",
+    "UnitNameFriendlyMinionName",
+    "UnitNameEnemyPetName",
+    "UnitNameEnemyGuardianName",
+    "UnitNameEnemyTotemName",
+    "UnitNameEnemyMinionName",
+    "UnitNameNonCombatCreatureName",
 }
 
 -- Saved before the sound preset is applied and put back on exit, so your exact volumes return.

@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.4.3
+
+- Cinematic mode now also hides the names of pets, minions, guardians, totems and critters (yours included). They come back with everything else when you turn it off.
+
 ## v1.4.2
 
 - Cinematic mode now clears your target when it starts: the game always shows your target's name, so it used to stay floating over a trainer or anyone else you had selected. This works from the key binding and from a macro with `/click EzCinematicButton` (the new recommended macro). Plain `/cine` can't clear a target, so it tells you to press Esc instead.
