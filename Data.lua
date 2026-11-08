@@ -9,8 +9,6 @@ ns.HIDE_CVARS = {
     "UnitNameFriendlySpecialNPCName",
     "UnitNameHostleNPC", -- Blizzard's spelling
     "UnitNameInteractiveNPC",
-    "UnitNameFriendlyPlayerName",
-    "UnitNameEnemyPlayerName",
     -- Pets, minions, guardians and totems (yours too) and critters.
     "UnitNameFriendlyPetName",
     "UnitNameFriendlyGuardianName",
@@ -22,15 +20,30 @@ ns.HIDE_CVARS = {
     "UnitNameEnemyMinionName",
     "UnitNameNonCombatCreatureName",
 }
-
--- Saved before the sound preset is applied and put back on exit, so your exact volumes return.
-ns.SOUND_CVARS = {
-    "Sound_MasterVolume", "Sound_EnableAllSound",
-    "Sound_MusicVolume", "Sound_EnableMusic",
-    "Sound_SFXVolume", "Sound_EnableSFX",
-    "Sound_AmbienceVolume", "Sound_EnableAmbience",
-    "Sound_DialogVolume", "Sound_EnableDialog",
+-- Other players' names: hidden too unless "Hide player names" is off on the options page.
+ns.PLAYER_NAME_CVARS = {
+    "UnitNameFriendlyPlayerName",
+    "UnitNameEnemyPlayerName",
 }
+
+-- Sound channels, in EzSoundMixer's order (its presets list volumes in this order). Saved
+-- before the sound preset is applied and put back on exit, so your exact volumes return.
+-- Volumes fade between the two over the options page's fade time.
+ns.SOUND_CHANNELS = {
+    { vol = "Sound_MasterVolume",   on = "Sound_EnableAllSound" },
+    { vol = "Sound_MusicVolume",    on = "Sound_EnableMusic" },
+    { vol = "Sound_SFXVolume",      on = "Sound_EnableSFX" },
+    { vol = "Sound_AmbienceVolume", on = "Sound_EnableAmbience" },
+    { vol = "Sound_DialogVolume",   on = "Sound_EnableDialog" },
+}
+ns.SOUND_CVARS = {}
+for _, ch in ipairs(ns.SOUND_CHANNELS) do
+    table.insert(ns.SOUND_CVARS, ch.vol)
+    table.insert(ns.SOUND_CVARS, ch.on)
+end
+
+-- Fade steps: volumes are set this often (seconds) while fading.
+ns.FADE_STEP = 0.03
 
 -- Raised while cinematic mode is on, past what the graphics menu offers. Only raised: a
 -- setting already at or above the value is left alone. The RAID copies are what the game
@@ -64,6 +77,8 @@ ns.DEFAULTS = {
     clutterDistance = 350,
     terrainDistance = 800,
     reflections = false,
+    hidePlayerNames = true,
+    fadeTime = 2,
 }
 
 -- Slider ranges (min, max, step). Maxima are values the client is known to accept.
@@ -71,12 +86,14 @@ ns.SLIDERS = {
     clutterDensity = { 16, 256, 16 },
     clutterDistance = { 100, 500, 25 },
     terrainDistance = { 200, 1000, 50 },
+    fadeTime = { 0, 6, 0.5 },
 }
 
--- EzSoundMixer preset applied on entry.
+-- EzSoundMixer preset applied on entry: your saved copy of it (EzSoundMixerDB.presets) when
+-- EzSoundMixer is loaded, else FALLBACK_SOUND.
 ns.SOUND_PRESET = "Music focus"
 
--- Used instead when EzSoundMixer isn't loaded: a copy of its default Music focus preset.
+-- Used when EzSoundMixer isn't loaded or its Music focus is still the default: a copy of that default.
 ns.FALLBACK_SOUND = {
     Sound_MasterVolume = "1.00",   Sound_EnableAllSound = "1",
     Sound_MusicVolume = "1.00",    Sound_EnableMusic = "1",

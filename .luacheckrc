@@ -16,6 +16,8 @@ read_globals = {
     "CreateFrame", "UIParent", "DEFAULT_CHAT_FRAME",
     -- Namespaced APIs
     "C_CVar", "C_AddOns",
+    -- Other addons' saved variables (read-only)
+    "EzSoundMixerDB",
     -- Settings panel
     "Settings", "CreateSettingsListSectionHeaderInitializer", "MinimalSliderWithSteppersMixin",
     -- Global APIs

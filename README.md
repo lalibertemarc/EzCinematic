@@ -10,10 +10,10 @@ When you turn cinematic mode on, EzCinematic:
 
 - **Hides the whole UI**, the same way Alt+Z does
 - **Hides nameplates**, both enemy and friendly
-- **Hides floating names** of NPCs, hostile mobs and other players. **Your own name stays** as you have it set
+- **Hides floating names** of NPCs, hostile mobs, pets and other players (other players' names can be kept, see Options). **Your own name stays** as you have it set
 - **Clears your target**, since the game always shows the name of whatever you have targeted
 - **Pushes the scenery past the graphics menu's limits**: thicker grass and ground clutter drawn much farther out, detailed terrain farther away, full weather, sharpest texture filtering, top screenshot quality, and a farther camera zoom. Settings you already have higher are left alone
-- **Brings the music forward** with the *Music focus* sound mix (music at full, effects and ambience softer)
+- **Brings the music forward** with the *Music focus* sound mix (music at full, effects and ambience softer), fading the volumes in smoothly rather than switching them at once
 
 When you turn it off, it puts back **your exact settings**: nameplates, names, graphics and every volume slider, not just defaults.
 
@@ -41,13 +41,18 @@ Tips:
 
 ## Options
 
-**Esc → Options → AddOns → EzCinematic** (or **`/cine config`**) sets how far the graphics boost goes:
+**Esc → Options → AddOns → EzCinematic** (or **`/cine config`**):
+
+- **Hide player names:** on by default; turn it off to keep other players' names, for group shots or role-play scenes
+- **Volume fade:** how long the volumes take to glide into the cinematic mix and back (2 seconds by default, 0 switches them at once)
+
+And how far the graphics boost goes:
 
 - **Boost graphics:** turn the whole boost off if you only want the clean screen
 - **Ground clutter density** and **distance**, and **terrain detail distance**
 - **Full water reflections:** water reflects buildings, players and creatures (off by default)
 
-The defaults are safe on an 8 GB graphics card. With a stronger card, raise them for even richer scenery; if the game ever crashes in a busy area like a city, lower them again. Changes apply the next time you turn cinematic mode on.
+The defaults are safe on an 8 GB graphics card. With a stronger card, raise them for even richer scenery; if the game ever crashes in a busy area like a city, lower them again. Changes apply the next time you turn cinematic mode on or off.
 
 ## Good to know
 

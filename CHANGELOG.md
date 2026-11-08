@@ -1,5 +1,10 @@
 # EzCinematic
 
+## v1.5.0
+
+- The volume change now fades smoothly instead of switching at once: the music swells in when cinematic mode turns on and settles back to your own volumes when it turns off. Set how long it takes (0 to 6 seconds, 2 by default, 0 for the old instant switch) under **Volume fade** on the options page.
+- New **Hide player names** option: turn it off to keep other players' names on screen in cinematic mode, for group shots or role-play scenes. NPC, pet and creature names are still hidden.
+
 ## v1.4.3
 
 - Cinematic mode now also hides the names of pets, minions, guardians, totems and critters (yours included). They come back with everything else when you turn it off.

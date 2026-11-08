@@ -28,6 +28,17 @@ local function Snapshot(list)
     end
 end
 
+-- Remembers the names' settings, then hides them.
+local function HideNames(list)
+    Snapshot(list)
+    for _, name in ipairs(list) do
+        if db.saved[name] then SetCVar(name, "0") end
+    end
+end
+
+local IS_SOUND = {}
+for _, name in ipairs(ns.SOUND_CVARS) do IS_SOUND[name] = true end
+
 -- Cinematic graphics values from Data.lua and the options page: CVar name -> number.
 local function GraphicsTargets()
     local targets = {}
@@ -56,13 +67,99 @@ local function BoostGraphics()
     end
 end
 
-local function ApplySoundPreset()
-    if C_AddOns.IsAddOnLoaded("EzSoundMixer") and SlashCmdList.EZSOUNDMIXER then
-        return SlashCmdList.EZSOUNDMIXER(ns.SOUND_PRESET)
+---------------------------------------------------------------------------
+-- Sound fade
+---------------------------------------------------------------------------
+-- Volumes glide to the cinematic mix and back instead of jumping. A channel switched off at
+-- either end fades from or to silence: it is switched on before a fade-in and off after a
+-- fade-out. The end values wait in db.fadeTo while a fade runs, so a /reload halfway through
+-- still lands on them at the next login.
+local fader = CreateFrame("Frame")
+local fade -- { steps = { { cvar, from, to } }, final = { cvar = value }, elapsed, duration }
+
+local function Volume(name) return tonumber(GetCVar(name)) or 0 end
+
+-- Stops a running fade where it is and returns the values it was heading for.
+local function StopFade()
+    fader:SetScript("OnUpdate", nil)
+    local final = fade and fade.final
+    fade = nil
+    db.fadeTo = nil
+    return final
+end
+
+-- Switches go first: off ones then silence the volume being set; on ones are on already.
+local function SetFinal(final)
+    for _, ch in ipairs(ns.SOUND_CHANNELS) do
+        if final[ch.on] then SetCVar(ch.on, final[ch.on]) end
     end
-    for name, value in pairs(ns.FALLBACK_SOUND) do
-        SetCVar(name, value)
+    for _, ch in ipairs(ns.SOUND_CHANNELS) do
+        if final[ch.vol] then SetCVar(ch.vol, final[ch.vol]) end
     end
+end
+
+local function FinishFade()
+    local final = StopFade()
+    if final then SetFinal(final) end
+end
+
+-- Smoothstep: starts and ends gently, so neither end of the fade has an audible corner.
+local function Ease(x) return x * x * (3 - 2 * x) end
+
+local function OnFadeUpdate(_, elapsed)
+    fade.elapsed = fade.elapsed + elapsed
+    fade.wait = fade.wait - elapsed
+    if fade.elapsed >= fade.duration then return FinishFade() end
+    if fade.wait > 0 then return end
+    fade.wait = ns.FADE_STEP
+    local k = Ease(fade.elapsed / fade.duration)
+    for _, step in ipairs(fade.steps) do
+        SetCVar(step[1], string.format("%.3f", step[2] + (step[3] - step[2]) * k))
+    end
+end
+
+-- Moves the sound CVars to `targets` (CVar -> value; missing ones are left alone) over
+-- db.fadeTime seconds, starting from wherever they are now, even halfway through another fade.
+local function FadeSound(targets)
+    StopFade()
+    local final, steps = {}, {}
+    for _, ch in ipairs(ns.SOUND_CHANNELS) do
+        if GetCVar(ch.vol) ~= nil and GetCVar(ch.on) ~= nil then
+            local isOn = GetCVar(ch.on) == "1"
+            local toVol = targets[ch.vol] or GetCVar(ch.vol)
+            local toOn = (targets[ch.on] or GetCVar(ch.on)) == "1"
+            final[ch.vol], final[ch.on] = toVol, toOn and "1" or "0"
+            local from = isOn and Volume(ch.vol) or 0
+            local to = toOn and (tonumber(toVol) or 0) or 0
+            if from ~= to then
+                if not isOn then
+                    SetCVar(ch.vol, "0")
+                    SetCVar(ch.on, "1")
+                end
+                steps[#steps + 1] = { ch.vol, from, to }
+            end
+        end
+    end
+    if (db.fadeTime or 0) <= 0 or #steps == 0 then return SetFinal(final) end
+    fade = { steps = steps, final = final, elapsed = 0, wait = 0, duration = db.fadeTime }
+    db.fadeTo = final
+    fader:SetScript("OnUpdate", OnFadeUpdate)
+end
+
+-- The Music focus mix: EzSoundMixer's saved copy when you have one (volumes in percent in
+-- SOUND_CHANNELS order, `on` = bitmask of enabled channels), else the built-in copy of its default.
+local function SoundTargets()
+    local preset = C_AddOns.IsAddOnLoaded("EzSoundMixer") and type(EzSoundMixerDB) == "table"
+        and type(EzSoundMixerDB.presets) == "table" and EzSoundMixerDB.presets[ns.SOUND_PRESET]
+    if type(preset) ~= "table" or type(preset.on) ~= "number" then return ns.FALLBACK_SOUND end
+    local targets = {}
+    for i, ch in ipairs(ns.SOUND_CHANNELS) do
+        if type(preset[i]) == "number" then
+            targets[ch.vol] = string.format("%.2f", preset[i] / 100)
+            targets[ch.on] = math.floor(preset.on / 2 ^ (i - 1)) % 2 == 1 and "1" or "0"
+        end
+    end
+    return targets
 end
 
 ---------------------------------------------------------------------------
@@ -139,14 +236,17 @@ local function Enter()
     if InCombatLockdown() then
         return Print("Can't start cinematic mode in combat.")
     end
+    -- Leaving cinematic mode may still be fading back to your volumes: those are yours.
+    local yours = StopFade()
     db.saved = {}
-    Snapshot(ns.HIDE_CVARS)
     Snapshot(ns.SOUND_CVARS)
-    for _, name in ipairs(ns.HIDE_CVARS) do
-        if db.saved[name] then SetCVar(name, "0") end
+    if yours then
+        for name, value in pairs(yours) do db.saved[name] = value end
     end
+    HideNames(ns.HIDE_CVARS)
+    if db.hidePlayerNames then HideNames(ns.PLAYER_NAME_CVARS) end
     BoostGraphics()
-    ApplySoundPreset()
+    FadeSound(SoundTargets())
     SetUIShown(false)
     SetEscOverride(true)
     SetClearOnPress(false)
@@ -158,10 +258,12 @@ end
 
 -- Puts back everything Enter changed. Also used after a /reload mid-cinematic.
 local function Restore()
+    local sound = {}
     for name, value in pairs(db.saved) do
-        SetCVar(name, value)
+        if IS_SOUND[name] then sound[name] = value else SetCVar(name, value) end
     end
     db.saved = nil
+    FadeSound(sound)
     SetUIShown(true)
     SetEscOverride(false)
     SetClearOnPress(true)
@@ -222,6 +324,11 @@ events:SetScript("OnEvent", function(_, event, arg1)
         BindToggleKeys()
     elseif event == "PLAYER_LOGIN" then
         BindToggleKeys()
+        -- A /reload halfway through a sound fade: put the values it was heading for in place,
+        -- unless cinematic mode is still on (restoring it below covers every sound CVar).
+        local final = db.fadeTo
+        db.fadeTo = nil
+        if final and not db.saved then SetFinal(final) end
         -- A /reload or disconnect during cinematic mode leaves names, graphics and sound changed; undo it.
         if db.saved then
             Print("Restoring names, nameplates, graphics and sound from the last cinematic session.")
