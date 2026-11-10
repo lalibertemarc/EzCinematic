@@ -271,7 +271,10 @@ end
 
 local function Exit()
     if InCombatLockdown() then
+        -- Nameplate CVars and override bindings are protected in combat. Only with Epic battle
+        -- on (or a /reload mid-fight) is cinematic mode still on here.
         pendingExit = true
+        Print("Leaving cinematic mode when combat ends. Press Alt+Z to see your interface now.")
         return
     end
     Restore()
@@ -299,8 +302,21 @@ SlashCmdList.EZCINEMATIC = function(msg)
         if ns.settingsCategory then Settings.OpenToCategory(ns.settingsCategory:GetID()) end
     elseif cmd == "" then
         EzCinematic_Toggle()
+    elseif cmd:match("^epic") then
+        local arg = cmd:match("^epic%s+(%a+)$")
+        if arg == "on" then
+            db.epicBattle = true
+        elseif arg == "off" then
+            db.epicBattle = false
+        elseif cmd == "epic" then
+            db.epicBattle = not db.epicBattle
+        else
+            return Print("/cine epic [on|off]")
+        end
+        Print(db.epicBattle and "Epic battle on: cinematic mode stays on when combat starts."
+            or "Epic battle off: combat turns cinematic mode off.")
     else
-        Print("/cine - toggle cinematic mode, /cine config - options")
+        Print("/cine - toggle cinematic mode, /cine epic [on|off] - stay on in combat, /cine config - options")
     end
 end
 
@@ -336,8 +352,9 @@ events:SetScript("OnEvent", function(_, event, arg1)
         end
     elseif event == "PLAYER_REGEN_DISABLED" then
         -- Fires just before combat lockdown, so the UI, nameplates and Esc can still all come back
-        -- now; waiting for the fight to end would leave you fighting blind.
-        if db and db.saved and not pendingExit then
+        -- now; waiting for the fight to end would leave you fighting blind. Epic battle keeps it
+        -- on for filming fights: leaving then waits for combat to end.
+        if db and db.saved and not pendingExit and not db.epicBattle then
             Print("Combat started, leaving cinematic mode.")
             Exit()
         end

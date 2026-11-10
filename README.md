@@ -37,13 +37,14 @@ Tips:
 - **Role-play walks:** turn it on and just walk. You can still move, jump, use emotes from keybinds and mount up
 - Press **Alt+Z** if you need the interface back for a moment. Your next press of the key still restores everything else
 - **Esc** clears your target without bringing the interface back. With nothing targeted, Esc turns cinematic mode off
-- **Combat** turns cinematic mode off on its own, so a mob that jumps you on a walk never leaves you fighting without your UI
+- **Combat** turns cinematic mode off on its own, so a mob that jumps you on a walk never leaves you fighting without your UI. Want to film your fights? Turn on **Epic battle** in the options
 
 ## Options
 
 **Esc → Options → AddOns → EzCinematic** (or **`/cine config`**):
 
 - **Hide player names:** on by default; turn it off to keep other players' names, for group shots or role-play scenes
+- **Epic battle:** off by default; turn it on to stay in cinematic mode when combat starts, for fight footage and battle screenshots (also `/cine epic on|off`)
 - **Volume fade:** how long the volumes take to glide into the cinematic mix and back (2 seconds by default, 0 switches them at once)
 
 And how far the graphics boost goes:
@@ -57,7 +58,7 @@ The defaults are safe on an 8 GB graphics card. With a stronger card, raise them
 ## Good to know
 
 - **Performance:** the extra ground clutter and terrain detail cost frame rate and video memory. On a slower PC, expect a lower frame rate while cinematic mode is on, or lower the boost in the options
-- **Combat:** cinematic mode can't be started in combat. If you turn it off during combat, everything comes back as soon as combat ends
+- **Combat:** cinematic mode can't be started in combat. With Epic battle on, turning it off during a fight brings names, nameplates and graphics back as soon as combat ends (the game locks them during a fight); press Alt+Z to see your interface meanwhile
 - **Reload-safe:** if you /reload or disconnect while it's on, your names, nameplates, graphics and volumes are restored the next time you log in
 - **Works great with [EzSoundMixer](https://github.com/lalibertemarc/EzSoundMixer):** if it's installed, EzCinematic uses your own *Music focus* preset, so you can tune the mix. Without it, a built-in Music focus mix is used. EzSoundMixer is optional
 

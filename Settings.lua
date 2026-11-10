@@ -32,6 +32,10 @@ function ns.BuildSettings(db)
     Check("hidePlayerNames", "Hide player names",
         "Hide other players' names while cinematic mode is on. Turn this off to keep them, for group shots or role-play scenes. Your own name stays as you have it set either way.")
 
+    layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Combat"))
+    Check("epicBattle", "Epic battle",
+        "Stay in cinematic mode when combat starts, to film or screenshot your fights without the interface. Off by default: combat turns cinematic mode off so you never fight blind. While it's on, turning cinematic mode off during a fight brings names, nameplates and graphics back when combat ends; press Alt+Z to see your interface right away.")
+
     layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Sound"))
     Slider("fadeTime", "Volume fade",
         "How long the volumes take to glide into the Music focus mix when cinematic mode turns on, and back to yours when it turns off. 0 switches them at once.",

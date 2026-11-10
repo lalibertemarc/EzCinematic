@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.6.0
+
+- New **Epic battle** option (off by default): cinematic mode stays on when combat starts, so you can film your fights or grab battle screenshots without the interface. Find it on the options page or type `/cine epic on`. If you turn cinematic mode off during a fight, your names, nameplates and graphics come back when combat ends (the game locks them during a fight); press Alt+Z to see your interface right away.
+
 ## v1.5.0
 
 - The volume change now fades smoothly instead of switching at once: the music swells in when cinematic mode turns on and settles back to your own volumes when it turns off. Set how long it takes (0 to 6 seconds, 2 by default, 0 for the old instant switch) under **Volume fade** on the options page.

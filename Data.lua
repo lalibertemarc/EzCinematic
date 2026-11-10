@@ -79,6 +79,7 @@ ns.DEFAULTS = {
     reflections = false,
     hidePlayerNames = true,
     fadeTime = 2,
+    epicBattle = false, -- stay in cinematic mode through combat
 }
 
 -- Slider ranges (min, max, step). Maxima are values the client is known to accept.
