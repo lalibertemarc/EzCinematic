@@ -3,6 +3,7 @@
 ## Notes: One key for clean screenshots: hides the UI, names and nameplates, and puts music up front.
 ## Author: Marc
 ## Version: @project-version@
+## Category: Audio & Video
 ## IconTexture: Interface\Icons\INV_Misc_Spyglass_03
 ## SavedVariables: EzCinematicDB
 ## OptionalDeps: EzSoundMixer
