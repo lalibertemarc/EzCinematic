@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.6.1
+
+- Listed under **Audio & Video** in the game's AddOns list.
+
 ## v1.6.0
 
 - New **Epic battle** option (off by default): cinematic mode stays on when combat starts, so you can film your fights or grab battle screenshots without the interface. Find it on the options page or type `/cine epic on`. If you turn cinematic mode off during a fight, your names, nameplates and graphics come back when combat ends (the game locks them during a fight); press Alt+Z to see your interface right away.
