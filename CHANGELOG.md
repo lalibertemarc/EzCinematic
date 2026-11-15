@@ -1,9 +1,5 @@
 # EzCinematic
 
-## Unreleased
-
-- New **Far scenery** graphics boost (on by default): while cinematic mode is on, the world is drawn farther out and trees, buildings and props keep their detail farther away, like View Distance and Environment Detail at their highest. Your own settings come back when it turns off. Turn it off on the options page if your card runs short of video memory.
-
 ## v1.6.1
 
 - Listed under **Audio & Video** in the game's AddOns list.
