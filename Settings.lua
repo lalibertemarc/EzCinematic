@@ -50,8 +50,6 @@ function ns.BuildSettings(db)
         "How far out ground clutter is drawn." .. RAISE_ONLY .. VRAM, "%d yd")
     Slider("terrainDistance", "Terrain detail distance",
         "How far out terrain keeps its full detail." .. RAISE_ONLY .. VRAM, "%d yd")
-    Check("scenery", "Far scenery",
-        "Draw the world farther out and keep trees, buildings and props detailed farther away, like View Distance and Environment Detail at their highest." .. RAISE_ONLY .. VRAM)
     Check("reflections", "Full water reflections",
         "Water reflects everything: buildings, players and creatures." .. VRAM)
 
