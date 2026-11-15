@@ -146,12 +146,17 @@ local function FadeSound(targets)
     fader:SetScript("OnUpdate", OnFadeUpdate)
 end
 
--- The Music focus mix: EzSoundMixer's saved copy when you have one (volumes in percent in
--- SOUND_CHANNELS order, `on` = bitmask of enabled channels), else the built-in copy of its default.
-local function SoundTargets()
-    local preset = C_AddOns.IsAddOnLoaded("EzSoundMixer") and type(EzSoundMixerDB) == "table"
-        and type(EzSoundMixerDB.presets) == "table" and EzSoundMixerDB.presets[ns.SOUND_PRESET]
-    if type(preset) ~= "table" or type(preset.on) ~= "number" then return ns.FALLBACK_SOUND end
+-- EzSoundMixer's Music focus (volumes in percent in SOUND_CHANNELS order, `on` = bitmask of
+-- enabled channels): your saved copy, else its built-in default unless you deleted it there
+-- (EzSoundMixerDB.hidden). Nil when EzSoundMixer isn't loaded or has no Music focus.
+local function MixerTargets()
+    local sm = C_AddOns.IsAddOnLoaded("EzSoundMixer") and EzSoundMixerDB
+    if type(sm) ~= "table" then return nil end
+    local preset = type(sm.presets) == "table" and sm.presets[ns.SOUND_PRESET]
+    if not preset and not (type(sm.hidden) == "table" and sm.hidden[ns.SOUND_PRESET]) then
+        preset = ns.MIXER_DEFAULT
+    end
+    if type(preset) ~= "table" or type(preset.on) ~= "number" then return nil end
     local targets = {}
     for i, ch in ipairs(ns.SOUND_CHANNELS) do
         if type(preset[i]) == "number" then
@@ -160,6 +165,35 @@ local function SoundTargets()
         end
     end
     return targets
+end
+
+-- The cinematic mix: EzSoundMixer's Music focus when chosen and available, else the options
+-- page's sliders (0 = channel off); nothing when "Change volumes" is off. Mute music goes on top.
+local function SoundTargets()
+    local targets = {}
+    if db.changeSound then
+        targets = db.useMixer and MixerTargets() or {}
+        if not next(targets) then
+            for _, ch in ipairs(ns.SOUND_CHANNELS) do
+                local percent = tonumber(db[ch.key]) or ns.DEFAULTS[ch.key]
+                targets[ch.vol] = string.format("%.2f", percent / 100)
+                targets[ch.on] = percent > 0 and "1" or "0"
+            end
+        end
+    end
+    if db.muteMusic then targets.Sound_EnableMusic = "0" end
+    return targets
+end
+
+-- While cinematic mode is on: fades to the mix as the options now say. Channels the mix leaves
+-- alone go back to your own volumes (unmuting music with "Change volumes" off).
+local function UpdateSound()
+    if not db.saved or pendingExit then return end
+    local targets = SoundTargets()
+    for _, name in ipairs(ns.SOUND_CVARS) do
+        if targets[name] == nil then targets[name] = db.saved[name] end
+    end
+    FadeSound(targets)
 end
 
 ---------------------------------------------------------------------------
@@ -294,6 +328,22 @@ for _, binding in ipairs(ns.BINDINGS) do
 end
 BINDING_HEADER_EZCINEMATIC = "EzCinematic"
 
+-- "/cine <word> [on|off]": sets or flips db[key]. False (after printing usage) on anything else.
+local function Switch(cmd, word, key)
+    local arg = cmd:match("^" .. word .. "%s+(%a+)$")
+    if arg == "on" then
+        db[key] = true
+    elseif arg == "off" then
+        db[key] = false
+    elseif cmd == word then
+        db[key] = not db[key]
+    else
+        Print("/cine " .. word .. " [on|off]")
+        return false
+    end
+    return true
+end
+
 SLASH_EZCINEMATIC1 = "/cine"
 SLASH_EZCINEMATIC2 = "/ezcinematic"
 SlashCmdList.EZCINEMATIC = function(msg)
@@ -303,20 +353,16 @@ SlashCmdList.EZCINEMATIC = function(msg)
     elseif cmd == "" then
         EzCinematic_Toggle()
     elseif cmd:match("^epic") then
-        local arg = cmd:match("^epic%s+(%a+)$")
-        if arg == "on" then
-            db.epicBattle = true
-        elseif arg == "off" then
-            db.epicBattle = false
-        elseif cmd == "epic" then
-            db.epicBattle = not db.epicBattle
-        else
-            return Print("/cine epic [on|off]")
-        end
+        if not Switch(cmd, "epic", "epicBattle") then return end
         Print(db.epicBattle and "Epic battle on: cinematic mode stays on when combat starts."
             or "Epic battle off: combat turns cinematic mode off.")
+    elseif cmd:match("^mute") then
+        if not Switch(cmd, "mute", "muteMusic") then return end
+        Print(db.muteMusic and "Music muted in cinematic mode." or "Music plays in cinematic mode.")
+        UpdateSound()
     else
-        Print("/cine - toggle cinematic mode, /cine epic [on|off] - stay on in combat, /cine config - options")
+        Print("/cine - toggle cinematic mode, /cine epic [on|off] - stay on in combat, "
+            .. "/cine mute [on|off] - no music, /cine config - options")
     end
 end
 

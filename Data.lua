@@ -29,12 +29,13 @@ ns.PLAYER_NAME_CVARS = {
 -- Sound channels, in EzSoundMixer's order (its presets list volumes in this order). Saved
 -- before the sound preset is applied and put back on exit, so your exact volumes return.
 -- Volumes fade between the two over the options page's fade time.
+-- `key` is the options page slider giving the channel's cinematic volume (percent, 0 = off).
 ns.SOUND_CHANNELS = {
-    { vol = "Sound_MasterVolume",   on = "Sound_EnableAllSound" },
-    { vol = "Sound_MusicVolume",    on = "Sound_EnableMusic" },
-    { vol = "Sound_SFXVolume",      on = "Sound_EnableSFX" },
-    { vol = "Sound_AmbienceVolume", on = "Sound_EnableAmbience" },
-    { vol = "Sound_DialogVolume",   on = "Sound_EnableDialog" },
+    { vol = "Sound_MasterVolume",   on = "Sound_EnableAllSound", key = "volMaster",   label = "Master volume" },
+    { vol = "Sound_MusicVolume",    on = "Sound_EnableMusic",    key = "volMusic",    label = "Music volume" },
+    { vol = "Sound_SFXVolume",      on = "Sound_EnableSFX",      key = "volSFX",      label = "Effects volume" },
+    { vol = "Sound_AmbienceVolume", on = "Sound_EnableAmbience", key = "volAmbience", label = "Ambience volume" },
+    { vol = "Sound_DialogVolume",   on = "Sound_EnableDialog",   key = "volDialog",   label = "Dialog volume" },
 }
 ns.SOUND_CVARS = {}
 for _, ch in ipairs(ns.SOUND_CHANNELS) do
@@ -80,6 +81,15 @@ ns.DEFAULTS = {
     hidePlayerNames = true,
     fadeTime = 2,
     epicBattle = false, -- stay in cinematic mode through combat
+    changeSound = true, -- switch to the cinematic mix below (or EzSoundMixer's Music focus)
+    useMixer = true,    -- EzSoundMixer's saved Music focus instead of the sliders, when it's loaded
+    muteMusic = false,  -- music off in cinematic mode, whatever the mix says
+    -- The cinematic mix, in percent: a copy of EzSoundMixer's default Music focus.
+    volMaster = 100,
+    volMusic = 100,
+    volSFX = 30,
+    volAmbience = 40,
+    volDialog = 60,
 }
 
 -- Slider ranges (min, max, step). Maxima are values the client is known to accept.
@@ -89,19 +99,15 @@ ns.SLIDERS = {
     terrainDistance = { 200, 1000, 50 },
     fadeTime = { 0, 6, 0.5 },
 }
+for _, ch in ipairs(ns.SOUND_CHANNELS) do ns.SLIDERS[ch.key] = { 0, 100, 5 } end
 
--- EzSoundMixer preset applied on entry: your saved copy of it (EzSoundMixerDB.presets) when
--- EzSoundMixer is loaded, else FALLBACK_SOUND.
+-- EzSoundMixer preset used on entry when it's loaded and "Use EzSoundMixer's Music focus" is on:
+-- your saved copy of it (EzSoundMixerDB.presets). Otherwise the options page's volume sliders.
 ns.SOUND_PRESET = "Music focus"
-
--- Used when EzSoundMixer isn't loaded or its Music focus is still the default: a copy of that default.
-ns.FALLBACK_SOUND = {
-    Sound_MasterVolume = "1.00",   Sound_EnableAllSound = "1",
-    Sound_MusicVolume = "1.00",    Sound_EnableMusic = "1",
-    Sound_SFXVolume = "0.30",      Sound_EnableSFX = "1",
-    Sound_AmbienceVolume = "0.40", Sound_EnableAmbience = "1",
-    Sound_DialogVolume = "0.60",   Sound_EnableDialog = "1",
-}
+-- EzSoundMixer only saves a preset once you change it; until then it uses its built-in default,
+-- kept in its code (ns.DEFAULT_PRESETS). A copy of that Music focus, in its preset format: volumes
+-- in percent in SOUND_CHANNELS order, `on` = bitmask of enabled channels (31 = all on).
+ns.MIXER_DEFAULT = { 100, 100, 30, 40, 60, on = 31 }
 
 ns.BINDINGS = {
     { action = "EZCINEMATIC_TOGGLE", label = "Toggle cinematic mode" },

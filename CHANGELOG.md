@@ -1,5 +1,11 @@
 # EzCinematic
 
+## Unreleased
+
+- New volume sliders on the options page: set the cinematic mix yourself (master, music, effects, ambience and dialog), no EzSoundMixer needed. Slide one to 0 to turn that sound off. The defaults are the same mix as before. If you have EzSoundMixer, its Music focus preset is still used unless you untick **Use EzSoundMixer's Music focus**.
+- New **Mute music** option: no music while cinematic mode is on, for your own soundtrack or a quiet scene. Also `/cine mute`, which works while cinematic mode is on.
+- New **Change volumes** option: untick it to keep your own volumes in cinematic mode.
+
 ## v1.6.1
 
 - Listed under **Audio & Video** in the game's AddOns list.

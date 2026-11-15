@@ -45,6 +45,9 @@ Tips:
 
 - **Hide player names:** on by default; turn it off to keep other players' names, for group shots or role-play scenes
 - **Epic battle:** off by default; turn it on to stay in cinematic mode when combat starts, for fight footage and battle screenshots (also `/cine epic on|off`)
+- **Change volumes:** on by default; turn it off to keep your own volumes in cinematic mode
+- **Master, Music, Effects, Ambience and Dialog volume:** the cinematic mix (music 100%, effects 30%, ambience 40%, dialog 60% by default); slide one to 0 to turn that sound off. With EzSoundMixer installed, **Use EzSoundMixer's Music focus** (on by default) uses your preset instead
+- **Mute music:** no music in cinematic mode, whatever the mix, for your own soundtrack or a quiet scene (also `/cine mute on|off`, which works while cinematic mode is on)
 - **Volume fade:** how long the volumes take to glide into the cinematic mix and back (2 seconds by default, 0 switches them at once)
 
 And how far the graphics boost goes:
@@ -60,6 +63,6 @@ The defaults are safe on an 8 GB graphics card. With a stronger card, raise them
 - **Performance:** the extra ground clutter and terrain detail cost frame rate and video memory. On a slower PC, expect a lower frame rate while cinematic mode is on, or lower the boost in the options
 - **Combat:** cinematic mode can't be started in combat. With Epic battle on, turning it off during a fight brings names, nameplates and graphics back as soon as combat ends (the game locks them during a fight); press Alt+Z to see your interface meanwhile
 - **Reload-safe:** if you /reload or disconnect while it's on, your names, nameplates, graphics and volumes are restored the next time you log in
-- **Works great with [EzSoundMixer](https://github.com/lalibertemarc/EzSoundMixer):** if it's installed, EzCinematic uses your own *Music focus* preset, so you can tune the mix. Without it, a built-in Music focus mix is used. EzSoundMixer is optional
+- **Works great with [EzSoundMixer](https://github.com/lalibertemarc/EzSoundMixer):** if it's installed, EzCinematic can use your own *Music focus* preset. Without it, set the cinematic mix with the volume sliders on the options page. EzSoundMixer is optional
 
 Made for **WoW Forever**.
