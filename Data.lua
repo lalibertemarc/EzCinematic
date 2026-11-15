@@ -69,6 +69,20 @@ ns.CLUTTER_FADE = 0.8
 ns.REFLECTION_CVARS = { "reflectionMode", "RAIDreflectionMode" }
 ns.REFLECTION_FULL = 3
 
+-- With the far scenery option: the world drawn farther and objects kept detailed farther out.
+-- These are what the View Distance and Environment Detail sliders at 9 gave in the beta before
+-- the October crash (its Config.wtf); the sliders sit at 7 since, which made shots look flat.
+ns.SCENERY_CVARS = {
+    farclip = 10000,                 RAIDfarclip = 10000,         -- how far the world is drawn
+    horizonClip = 10000,             RAIDhorizonClip = 10000,
+    horizonStart = 4000,             RAIDhorizonStart = 4000,     -- far hills drawn in detail
+    doodadLodScale = 150,            -- trees and props keep their detailed models farther out
+    lodObjectFadeScale = 150,        -- and fade out later
+    lodObjectCullSize = 14,          RAIDlodObjectCullSize = 14,  -- smaller objects still drawn
+}
+-- Lower means more for these: they are lowered instead of raised.
+ns.LOWER_IS_MORE = { lodObjectCullSize = true, RAIDlodObjectCullSize = true }
+
 -- Options page defaults. Safe on an 8 GB card: 256 clutter at 500 yd, terrain 1000 and full
 -- reflections together ran one out of video memory in a city (D3D12 framebuffer/texture asserts).
 ns.DEFAULTS = {
@@ -77,6 +91,7 @@ ns.DEFAULTS = {
     clutterDistance = 350,
     terrainDistance = 800,
     reflections = false,
+    scenery = true,
     hidePlayerNames = true,
     fadeTime = 2,
     epicBattle = false, -- stay in cinematic mode through combat

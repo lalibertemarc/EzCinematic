@@ -52,7 +52,18 @@ local function GraphicsTargets()
     if db.reflections then
         for _, name in ipairs(ns.REFLECTION_CVARS) do targets[name] = ns.REFLECTION_FULL end
     end
+    if db.scenery then
+        for name, value in pairs(ns.SCENERY_CVARS) do targets[name] = value end
+    end
     return targets
+end
+
+-- Whether value gives more than current: higher, or lower for ns.LOWER_IS_MORE CVars.
+local function IsMore(name, current, value)
+    current = tonumber(current)
+    if not current then return true end
+    if ns.LOWER_IS_MORE[name] then return value < current end
+    return value > current
 end
 
 -- Raises each graphics CVar to its cinematic value, remembering only the ones it changes.
@@ -60,7 +71,7 @@ local function BoostGraphics()
     if not db.boost then return end
     for name, value in pairs(GraphicsTargets()) do
         local current = GetCVar(name)
-        if current ~= nil and (tonumber(current) or 0) < value then
+        if current ~= nil and IsMore(name, current, value) then
             db.saved[name] = current
             SetCVar(name, tostring(value))
         end
