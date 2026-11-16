@@ -38,29 +38,25 @@ function ns.BuildSettings(db)
         "Stay in cinematic mode when combat starts, to film or screenshot your fights without the interface. Off by default: combat turns cinematic mode off so you never fight blind. While it's on, turning cinematic mode off during a fight brings names, nameplates and graphics back when combat ends; press Alt+Z to see your interface right away.")
 
     layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Sound"))
-    local change = Check("changeSound", "Change volumes",
-        "Switch to the cinematic mix below while cinematic mode is on: music up front, the rest softer. Your own volumes come back when it turns off. Turn this off to leave your volumes as they are.")
-    local function Changing() return db.changeSound end
+    -- No SetParentInitializer/AddEvaluateStateCVar here (no greying out): they write fields on
+    -- Blizzard's initializers from addon code, and the settings list then draws Blizzard's own
+    -- rows tainted (Forever: IsUserOAuthed forbidden on the Social page, 2026-11-15).
+    Check("changeSound", "Change volumes",
+        "Switch to the cinematic mix below while cinematic mode is on: music up front, the rest softer. Your own volumes come back when it turns off. Turn this off to leave your volumes as they are; the options below then do nothing.")
     -- EzSoundMixer is an optional dependency, so it has loaded by now if it's going to.
     local hasMixer = C_AddOns.IsAddOnLoaded("EzSoundMixer")
-    local mixer
     if hasMixer then
-        mixer = Check("useMixer", "Use EzSoundMixer's Music focus",
-            "Use the Music focus preset as you set it in EzSoundMixer instead of the volumes below. If you deleted Music focus there, the volumes below are used.")
-        mixer:SetParentInitializer(change, Changing)
+        Check("useMixer", "Use EzSoundMixer's Music focus",
+            "Use the Music focus preset as you set it in EzSoundMixer instead of the volumes below. If you deleted Music focus there, the volumes below are used. Needs Change volumes.")
     end
     local function Percent(value)
         if value <= 0 then return "Off" end
         return string.format("%d%%", math.floor(value + 0.5))
     end
-    local function UsingSliders() return db.changeSound and not (hasMixer and db.useMixer) end
+    local sliderTip = "Volume while cinematic mode is on. Slide to 0 to turn this sound off. Needs Change volumes"
+        .. (hasMixer and ", and is used when Use EzSoundMixer's Music focus is off." or ".")
     for _, ch in ipairs(ns.SOUND_CHANNELS) do
-        local slider = Slider(ch.key, ch.label,
-            "Volume while cinematic mode is on. Slide to 0 to turn this sound off.", Percent)
-        slider:SetParentInitializer(change, UsingSliders)
-        -- A control only rechecks itself when its parent setting changes; the EzSoundMixer box
-        -- greys these out too. Despite the name, this watches any setting by its variable.
-        if mixer then slider:AddEvaluateStateCVar(mixer:GetSetting():GetVariable()) end
+        Slider(ch.key, ch.label, sliderTip, Percent)
     end
     Check("muteMusic", "Mute music",
         "No music while cinematic mode is on, whatever the volumes say: for your own music or a quiet scene. Also /cine mute.")
