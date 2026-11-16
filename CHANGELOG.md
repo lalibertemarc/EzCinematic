@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.7.1
+
+- Fixed "EzCinematic has been blocked from an action only available to the Blizzard UI" when opening or searching the game's Options. The volume options no longer grey out; their tooltips say which option they need instead.
+
 ## v1.7.0
 
 - New volume sliders on the options page: set the cinematic mix yourself (master, music, effects, ambience and dialog), no EzSoundMixer needed. Slide one to 0 to turn that sound off. The defaults are the same mix as before. If you have EzSoundMixer, its Music focus preset is still used unless you untick **Use EzSoundMixer's Music focus**.
