@@ -1,5 +1,9 @@
 # EzCinematic
 
+## v1.7.2
+
+- Friendly NPC names (the grey ones, like guards) and friendly players' nameplates now hide in cinematic mode too.
+
 ## v1.7.1
 
 - Fixed "EzCinematic has been blocked from an action only available to the Blizzard UI" when opening or searching the game's Options. The volume options no longer grey out; their tooltips say which option they need instead.

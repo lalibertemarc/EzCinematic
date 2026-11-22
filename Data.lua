@@ -5,6 +5,10 @@ local _, ns = ...
 ns.HIDE_CVARS = {
     "nameplateShowEnemies",
     "nameplateShowFriends",
+    -- Forever's own switches (Era lacks them; missing CVars are skipped): friendly NPC
+    -- nameplates show their names in grey (Night Watch Guard), and friendly players' plates.
+    "nameplateShowFriendlyNpcs",
+    "nameplateShowFriendlyPlayers",
     "UnitNameNPC",
     "UnitNameFriendlySpecialNPCName",
     "UnitNameHostleNPC", -- Blizzard's spelling
